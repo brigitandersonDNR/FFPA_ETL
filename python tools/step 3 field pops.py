@@ -21,7 +21,7 @@ county_input_data = "{0}_county".format(county)
 
 
 #Update DNR Region Code
-#ffpa_county MUST be added to map to populate correctly
+#ffpa_county feature class MUST be added to map to populate correctly
 region_codes = {"Northeast":23, "Southeast":1, "Pacific Cascade":4, "Olympic":2, "Northwest":19, "South Puget Sound":9}
 field_name = "JURISDICT_LABEL_NM"
 
