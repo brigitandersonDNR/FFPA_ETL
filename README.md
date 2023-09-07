@@ -2,7 +2,8 @@
 
 ## Goal
 
-The goal of these scripts are to create a modular process that can be run within ArcGIS Pro for the FFPA ETL process. These are a series of python tools that are loaded into an FFPA template that are then used to walk through the necessary steps to prepare the data for loading into the FFPA portal. 
+The goal of these scripts are to create a modular process that can be run within ArcGIS Pro for the FFPA ETL process. These are a series of python tools that are loaded into an FFPA template that are then used to walk through the necessary steps to prepare the data for loading into the FFPA portal. Network location is here:
+\\dnr\divisions\RP_GIS\projects\ffpa_ETL
 
 ## Script Details
 
