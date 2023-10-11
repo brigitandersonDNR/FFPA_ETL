@@ -16,12 +16,13 @@ county_unimproved_acres_field=arcpy.GetParameterAsText(6)
 
 #Set Variables
 regions_fc = r"\\dnr\divisions\RP_GIS\projects\ffpa_ETL\data and tools\standard input data\input_analysis_data.gdb\DNR_regions"
+fpd_fc = r"\\dnr\divisions\RP_GIS\projects\ffpa_ETL\data and tools\standard input data\input_analysis_data.gdb\fire_prot_districts"
 ffpa_county = "{0}_state".format(county)
 county_input_data = "{0}_county".format(county)
 
 
 #Update DNR Region Code
-#ffpa_county MUST be added to map to populate correctly
+#ffpa_county feature class MUST be added to map to populate correctly
 region_codes = {"Northeast":23, "Southeast":1, "Pacific Cascade":4, "Olympic":2, "Northwest":19, "South Puget Sound":9}
 field_name = "JURISDICT_LABEL_NM"
 
@@ -34,6 +35,30 @@ for region in region_codes:
     arcpy.management.CalculateField(ffpa_county, "RGN_CD", rgn_cd, "PYTHON3")
     arcpy.SelectLayerByAttribute_management(ffpa_county, "CLEAR_SELECTION")
     arcpy.SelectLayerByAttribute_management(regions_fc, "CLEAR_SELECTION")
+
+#Update Fire Protection District
+##FPD fature class MUST be added to map to populate correction
+
+def fpd_codes_values(table, field):
+    with arcpy.da.SearchCursor(table, [field]) as cursor:
+        return sorted ({row[0] for row in cursor})
+
+fpd_field_name = "FPD_CODE"
+fpd_codes = fpd_codes_values(fpd_fc, fpd_field_name)
+
+for district in fpd_codes:
+    where_clause_fpd = '"' + fpd_field_name + '" = ' + "'" + district + "'"
+    fdp_select = arcpy.SelectLayerByAttribute_management(fpd_fc, "NEW_SELECTION", where_clause_fpd)
+    arcpy.management.CalculateField(ffpa_county, "FIRE_PROTECTION_DIST_CD", district, "PYTHON3")
+    arcpy.SelectLayerByAttribute_management(ffpa_county, "CLEAR_SELECTION")
+    arcpy.SelectLayerByAttribute_management(fpd_fc, "CLEAR_SELECTION")
+
+with arcpy.da.UpdateCursor(ffpa_county, "FIRE_PROTECTION_DIST_CD") as cursor:
+    for row in cursor:
+        row[0].lstrip("0")
+        cursor.updateRow(row)
+
+del cursor
 
 
 #County Code Look Up Table
