@@ -33,7 +33,7 @@ for field in drop_fields:
 arcpy.management.AddFields(ffpa_county, [["PRCL_REVW_UNIMPROVED_ACRES", "Double"], ["PRCL_REVW_IMPROVED_ACRES", "Double"], ["PRCL_REVW_TOTAL_ACRES", "Double"],
                                          ["PRCL_REVW_LAND_VALUE_AMT", "Double"], ["PRCL_REVW_IMPROVED_VALUE_AMT", "Double"], ["RGN_CD", "Short"],
                                          ["FFPA_CO_EXT_ID", "Short"], ["FFPA_TAX_STATUS_CD", "Short"], ["PRCL_REVW_YR", "Short"], ["ASMNT_DECSN_CD", "Short"],
-                                         ["FFPA_PRCL_EXEMPT_FLG", "Text"], ["ASMNT_DECSN_NM", "Text"], ["RS_PRED_NM", "Text"], ["FLAG_TY_CD", "Text"]])
+                                         ["FFPA_PRCL_EXEMPT_FLG", "Text"], ["ASMNT_DECSN_NM", "Text"], ["RS_PRED_NM", "Text"], ["FLAG_TY_CD", "Text"], ["FIRE_PROTECTION_DIST_CD", "Text"]])
 
 #Rename Fields
 rename_fields = {
