@@ -47,18 +47,14 @@ fpd_field_name = "FPD_CODE"
 fpd_codes = fpd_codes_values(fpd_fc, fpd_field_name)
 
 for district in fpd_codes:
+    district_string = str(district)
+    district_string= district_string.lstrip("0")
     where_clause_fpd = '"' + fpd_field_name + '" = ' + "'" + district + "'"
-    fdp_select = arcpy.SelectLayerByAttribute_management(fpd_fc, "NEW_SELECTION", where_clause_fpd)
-    arcpy.management.CalculateField(ffpa_county, "FIRE_PROTECTION_DIST_CD", district, "PYTHON3")
+    fpd_select = arcpy.SelectLayerByAttribute_management(fpd_fc, "NEW_SELECTION", where_clause_fpd)
+    arcpy.SelectLayerByLocation_management(ffpa_county, "WITHIN", fpd_select, selection_type="NEW_SELECTION")
+    arcpy.management.CalculateField(ffpa_county, "FIRE_PROTECTION_DIST_CD", district_string, "PYTHON3")
     arcpy.SelectLayerByAttribute_management(ffpa_county, "CLEAR_SELECTION")
     arcpy.SelectLayerByAttribute_management(fpd_fc, "CLEAR_SELECTION")
-
-with arcpy.da.UpdateCursor(ffpa_county, "FIRE_PROTECTION_DIST_CD") as cursor:
-    for row in cursor:
-        row[0].lstrip("0")
-        cursor.updateRow(row)
-
-del cursor
 
 
 #County Code Look Up Table
